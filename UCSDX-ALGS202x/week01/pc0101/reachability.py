@@ -1,19 +1,16 @@
 #Uses python3
 
 import sys
-
+#https://www.python.org/doc/essays/graphs/
 def find_path(graph, start, end, path=[]):
         #print("find_path",graph,start,end)
         path = path + [start]
         if start == end:
             return path
+
         if  not (start in graph):
             return None
-        #    print("")
-        #else:
-        #    return None
-        #if not graph.has_key(start):
-        #    return None
+
         for node in graph[start]:
             if node not in path:
                 newpath = find_path(graph, node, end, path)

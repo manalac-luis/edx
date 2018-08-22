@@ -10,7 +10,10 @@ from collections import defaultdict
 class Graph():
     def __init__(self,vertices):
         self.graph = defaultdict(list)
-        self.V = 2*vertices
+        for i in range(vertices):
+            self.graph[i]=[]
+        self.V = vertices
+        #print("self.graph",self.graph)
 
     def addEdge(self,u,v):
         self.graph[u].append(v)
@@ -76,19 +79,12 @@ if __name__ == '__main__':
     #print("input",input)
     #print("data:",data)
     n, m = data[0:2]
-    if (m>n):
-        n=m
     d_edges=[]
+
+    if m>n:
+        n=m
     for i in range(1,len(data)//2):
         edge = [data[i*2],data[(i*2)+1]]
         d_edges.append(edge)
-        #print("Edge:",edge)
-    #n, m = data[0:2]
-    #data = data[2:]
-    #edges = list(zip(data[0:(2 * m):2], data[1:(2 * m):2]))
-    #adj = [[] for _ in range(n)]
-    #for (a, b) in edges:
-    #    adj[a - 1].append(b - 1)
-    #print("main: edges ",d_edges)
-    #print("data:",data)
+
     print(acyclic(n,d_edges))

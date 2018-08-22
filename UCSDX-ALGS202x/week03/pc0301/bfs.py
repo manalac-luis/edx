@@ -11,12 +11,88 @@ class Graph():
     def __init__(self,vertices):
         self.graph = defaultdict(list)
         for i in range(vertices):
+            #self.graph[i].append(-1000)
             self.graph[i]=[]
         self.V = vertices
 
     def addEdge(self,u,v):
         self.graph[u].append(v)
         #print("self.graph",self.graph)
+        #if undirected add reciprocal
+    def addEdgeU(self,u,v):
+        self.graph[u].append(v)
+        #if undirected add reciprocal
+        if u in self.graph[v]:
+            print("")
+        else:
+            self.graph[v].append(u)
+
+
+    def printAdj(self):
+        for i in range(len(self.graph)):
+            print("node: ",i+1," adj:",end="")
+            for j in range(len(self.graph[i])):
+                print(self.graph[i][j]+1," ",end="")
+            print("")
+ # Function to print a BFS of graph
+    def BFS(self, s,v):
+
+        #For all u element of V, mark distance as infinity
+        dist = []
+        for i in range(len(self.graph)):
+            dist.append(999999999)
+        #dist[s] = 0
+        dist[s]=0
+
+
+        #queue containing just s
+        queue = []
+        queue.append(s)
+        #while queue not empty
+        while (len(queue)>0):
+            u = queue.pop(0)
+            #get a vertex from the front of the queue
+            #print("vertex:",u)
+
+            for i in self.graph[u]:
+                    if dist[i] > 1000000:
+                        queue.append(i)
+                        dist[i] = dist[u]+1
+        #for i in range(len(dist)):
+        #    print("dist:",i+1,",",dist[i])
+
+        if (dist[v] > 1000000):
+            return -1
+        else:
+            return dist[v]
+
+        return dist[v]
+        # Mark all the vertices as not visited
+        visited = [False] * (len(self.graph))
+
+        # Create a queue for BFS
+        queue = []
+
+        # Mark the source node as
+        # visited and enqueue it
+        queue.append(s)
+        visited[s] = True
+
+        while queue:
+
+            # Dequeue a vertex from
+            # queue and print it
+            s = queue.pop(0)
+            print (s, end = " ")
+
+            # Get all adjacent vertices of the
+            # dequeued vertex s. If a adjacent
+            # has not been visited, then mark it
+            # visited and enqueue it
+            for i in self.graph[s]:
+                if visited[i] == False:
+                    queue.append(i)
+                    visited[i] = True
 
     def isCyclicUtil(self, v, visited, recStack):
 
@@ -109,15 +185,23 @@ def topo(n,edges):
     g = Graph(n)
 
     for i in range(len(edges)):
-        #print("Edges:",edges[i][0]," ",edges[i][1]," ",i," ",n)
         g.addEdge(edges[i][0]-1, edges[i][1]-1)
 
-    #g.addEdge(1,2)
-    #g.addEdge(4,1)
-    #g.addEdge(2,3)
-    #g.addEdge(3,1)
     g.topologicalSort()
 
+def bfs(n,edges,a,v):
+    #n - number of vertices
+    #edges - adjency list
+    #a -starting vertex
+
+    g = Graph(n)
+    a = a - 1
+    v = v - 1
+    for i in range(len(edges)):
+        g.addEdgeU(edges[i][0]-1, edges[i][1]-1)
+
+    #g.printAdj();
+    return(g.BFS(a,v))
 
 
 
@@ -128,8 +212,10 @@ if __name__ == '__main__':
     #print("data:",data)
     n, m = data[0:2]
     d_edges=[]
-    for i in range(1,len(data)//2):
+    for i in range(1,m+1):
         edge = [data[i*2],data[(i*2)+1]]
         d_edges.append(edge)
+    u, v = data[(m+1)*2:(m+1)*2+2]
+    #print("u,v",u,",",v)
 
-    topo(n,d_edges)
+    print(bfs(n,d_edges,u,v))
